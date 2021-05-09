@@ -53,5 +53,5 @@ By the way, Einstein is genius.[@doi.org/10.1002/andp.19053221004; @doi:10.1002/
 Command:
 
 ```sh
-pandoc --lua-filter doi2cite --filter=pandoc-crossref --citeproc -s example.md -o example.pdf
+pandoc --lua-filter doi2cite.lua --filter=pandoc-crossref --citeproc -s example.md -o example.pdf
 ```
