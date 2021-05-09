@@ -45,7 +45,7 @@ bib_from_doi:
 
 # Introduction
 Electrophoresis is one of the most usable methodologies to separate proteins.[@https://doi.org/10.1038/227680a0]
-By the way, Einstein is genius.[@doi.org/10.1002/andp.19053221004; @doi:10.1002/andp.19053220806; @DOI: 10.1002/andp.19053220607]![2](https://user-images.githubusercontent.com/30950088/117561376-465bb200-b0d1-11eb-94a8-2418ed878b8c.png)
+By the way, Einstein is genius.[@doi.org/10.1002/andp.19053221004; @doi:10.1002/andp.19053220806; @DOI: 10.1002/andp.19053220607]
 
 
 </pre>
