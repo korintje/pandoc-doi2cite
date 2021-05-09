@@ -22,6 +22,7 @@ Following DOI tags can be used:
 * @doi.org/
 * @DOI:
 * @doi:
+The first one (@https://doi.org/) may be the most useful because it is the same as the accessible URL.
 
 # Specify auto-generated bibliography file path
 The path of the auto-generated bibliography file can be designated in the document yaml header.
