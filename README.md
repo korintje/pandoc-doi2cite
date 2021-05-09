@@ -1,17 +1,17 @@
 # pandoc-doi2cite
 This pandoc lua filiter allows you to put references in a document using DOI tags.
 What the filter do are as follows:
-    1. Search citations with DOI tags in the document
-    2. Get bibtex data of the DOI from http://api.crossref.org
-    3. Add reference data to a .bib file (default: "./bib_from_doi.bib". It can be designated in the yaml header)
-    4. Replace citation to the correspoinding bib key.
+1. Search citations with DOI tags in the document
+2. Get bibtex data of the DOI from http://api.crossref.org
+3. Add reference data to a .bib file (default: "./bib_from_doi.bib". It can be designated in the yaml header)
+4. Replace citation to the correspoinding bib key.
 
 # DOI tags
 Following DOI tags can be used:
-    - @DOI:
-    - @doi:
-    - @https://doi.org/
-    - @doi.org/
+* @https://doi.org/
+* @doi.org/
+* @DOI:
+* @doi:
 
 # Example
 Example paper.md:
