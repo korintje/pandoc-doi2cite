@@ -1,7 +1,11 @@
 # pandoc-doi2cite
 This pandoc lua filiter helps users to insert references in a document with using some "DOI tagas".
 With this filter, users do not need to make bibtex file by themselves. Instead, the filter automatically generate .bib file from the DOI tags, and convert the DOI tags into citation keys available by `pandoc-crossref`.
+
+<img src="https://user-images.githubusercontent.com/30950088/117561410-87ec5d00-b0d1-11eb-88be-931f3158ec44.png" width="960">
+
 What the filter do are as follows:
+
 1. Search citations with DOI tags in the document
 2. Get bibtex data of the DOI from http://api.crossref.org
 3. Add reference data to a .bib file
@@ -39,7 +43,8 @@ bib_from_doi:
 
 # Introduction
 Electrophoresis is one of the most usable methodologies to separate proteins.[@https://doi.org/10.1038/227680a0]
-By the way, Einstein is genius.[@doi.org/10.1002/andp.19053221004; @doi:10.1002/andp.19053220806; @DOI: 10.1002/andp.19053220607]
+By the way, Einstein is genius.[@doi.org/10.1002/andp.19053221004; @doi:10.1002/andp.19053220806; @DOI: 10.1002/andp.19053220607]![2](https://user-images.githubusercontent.com/30950088/117561376-465bb200-b0d1-11eb-94a8-2418ed878b8c.png)
+
 
 </pre>
 
