@@ -50,8 +50,12 @@ By the way, Einstein is genius.[@doi.org/10.1002/andp.19053221004; @doi:10.1002/
 
 </pre>
 
-Command:
+Example command (in the case of [JACS](https://pubs.acs.org/journal/jacsat) style):
 
 ```sh
-pandoc --lua-filter doi2cite.lua --filter=pandoc-crossref --citeproc -s example.md -o example.pdf
+pandoc --lua-filter doi2cite.lua --filter=pandoc-crossref --citeproc --csl=journal-of-the-american-chemical-society.csl -s example.md -o example.pdf
 ```
+
+Example result
+
+![4](https://user-images.githubusercontent.com/30950088/117563789-3947be80-b0e3-11eb-974c-565af3902dca.png)
