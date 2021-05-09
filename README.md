@@ -26,7 +26,7 @@ Both of the string and array are acceptable(If it is given as an array, only fir
 Note that users typically should add same file path also in `bibliography`, in order to be recognized by `--citeproc`.
 
 # Example
-Example paper.md:
+example paper.md:
 
 <pre>
 ---
