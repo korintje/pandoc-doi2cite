@@ -1,5 +1,5 @@
 # pandoc-doi2cite
-This pandoc lua filiter helps users to insert references in a document with using some "DOI tagas".
+This pandoc lua filiter helps users to insert references in a document with using DOI(Digital Object Identifier) tags.
 With this filter, users do not need to make bibtex file by themselves. Instead, the filter automatically generate .bib file from the DOI tags, and convert the DOI tags into citation keys available by `pandoc-crossref`.
 
 <img src="https://user-images.githubusercontent.com/30950088/117561410-87ec5d00-b0d1-11eb-88be-931f3158ec44.png" width="960">
