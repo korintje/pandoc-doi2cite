@@ -45,7 +45,6 @@ end
 -- Then, replace "citation.id"
 function Cite(c)
     for _, citation in pairs(c.citations) do
-        local entry_key;
         local id = citation.id:gsub('%s+', ''):gsub('%%2F', '/')
         if id:sub(1,16) == "https://doi.org/" then
             doi = id:sub(17)
@@ -58,26 +57,27 @@ function Cite(c)
         end
         if doi then
             if doi_key_map[doi] ~= nil then
-                entry_key = doi_key_map[doi]
+                local entry_key = doi_key_map[doi]
+                citation.id = entry_key
             else
                 local entry_str = get_bibentry(doi)
-                if entry_str then
+                if entry_str == nil or entry_str == "Resource not found." then
+                    print("Failed to get ref from DOI: " .. doi)
+                else
                     entry_str = replace_symbols(entry_str)
-                    entry_key = get_entrykey(entry_str)
+                    local entry_key = get_entrykey(entry_str)
                     if key_list[entry_key] ~= nil then
                         entry_key = entry_key.."_"..doi
                         entry_str = replace_entrykey(entry_str, entry_key)
                     end
                     key_list[entry_key] = true
                     doi_key_map[doi] = entry_key
+                    citation.id = entry_key
                     f = io.open(bibpath, "a")
                     f:write(entry_str .. "\n")
                     f:close()
-                else
-                    print("Failed to get ref from DOI: " .. doi)
                 end                
             end
-            citation.id = entry_key
         end
     end
     return c
