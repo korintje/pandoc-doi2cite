@@ -68,11 +68,6 @@ function Cite(c)
                         entry_key = entry_key.."_"..doi
                         entry_str = replace_entrykey(entry_str, entry_key)
                     end
-                    -- if Set(bibkeylist)[entry_key] then
-                    --     entry_key = entry_key.."_"..doi
-                    --     entry_str = replace_entrykey(entry_str, entry_key)
-                    -- end
-                    -- bibkeylist[#bibkeylist+1] = entry_key
                     key_list[entry_key] = true
                     doi_key_map[doi] = entry_key
                     f = io.open(bibpath, "a")
@@ -92,15 +87,6 @@ end
 --------------------------------------------------------------------------------
 -- Common Functions --
 --------------------------------------------------------------------------------
--- Make boolean hashmap from given list. key = list item, value = boolean.
---function Set (list)
---    local set = {};
---    for _, item in ipairs(list) do
---        set[item] = true
---    end
---    return set
---end
-
 -- Get bib of DOI from http://api.crossref.org
 function get_bibentry(doi)
     local entry_str = doi_entry_map[doi]
@@ -108,7 +94,6 @@ function get_bibentry(doi)
         print("Request RefData of DOI = " .. doi)
         local url = base_url .. "/works/" .. doi .. "/transform/application/x-bibtex"
         mt, entry_str = pandoc.mediabag.fetch(url)
-        -- entry_str = make_key_unique(entry_str)
     end
     return entry_str
 end
@@ -153,15 +138,6 @@ function get_doi_entry_map(bibtex_string)
     end
     return entries
 end
-
--- Replace entry key of "entry_string" to DOI-contained unique key 
--- function make_key_unique(entry_string)
---     local key = get_entrykey(entry_string)
---     local doi = get_entrydoi(entry_string)
---     local unique_key = key.."_"..doi
---     entry_string = entry_string:gsub('(@%w+{).-(,)', '%1'..unique_key..'%2')
---     return entry_string    
--- end  
 
 
 --------------------------------------------------------------------------------
