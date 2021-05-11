@@ -40,8 +40,6 @@ function Meta(m)
         end
         f:close()
     end
-    -- f = io.open(bibpath, "w")
-    -- f:close()
     print(bibpath .. " is created for bibliography from DOI.")
 end
 
@@ -79,8 +77,12 @@ function Cite(c)
                     doi_key_map[doi] = entry_key
                     citation.id = entry_key
                     local f = io.open(bibpath, "a+")
-                    f:write(entry_str .. "\n")
-                    f:close()
+                    if f then
+                        f:write(entry_str .. "\n")
+                        f:close()
+                    else
+                        error("Can not open file: "..bibpath)
+                    end
                 end                
             end
         end
