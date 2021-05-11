@@ -20,11 +20,13 @@ doi_entry_map = {};
 -- Get bibliography filepath from yaml metadata
 function Meta(m)
     local bp = m.bib_from_doi
-    if bp[1].text ~= nil then
-        bibpath = bp[1].text
-    elseif bp[1][1] ~= nil then
-        bibpath = bp[1][1].text
-    else end
+    if bp ~= nil then
+        if bp[1].text ~= nil then
+            bibpath = bp[1].text
+        elseif bp[1][1] ~= nil then
+            bibpath = bp[1][1].text
+        else end
+    end
     f = io.open(bibpath, "r")
     if f then
         entries_str = f:read('*all')
