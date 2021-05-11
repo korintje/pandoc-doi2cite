@@ -92,7 +92,7 @@ function get_bibentry(doi)
     local entry_str = doi_entry_map[doi]
     if entry_str == nil then
         print("Request RefData of DOI = " .. doi)
-        local url = base_url .. "/works/" .. doi .. "/transform/application/x-bibtex"
+        local url = base_url.."/works/"..doi.."/transform/application/x-bibtex"
         mt, entry_str = pandoc.mediabag.fetch(url)
     end
     return entry_str
