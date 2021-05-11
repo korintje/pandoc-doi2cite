@@ -28,7 +28,7 @@ function Meta(m)
             bibpath = bp[1][1].text
         else end
     end
-    f = io.open(bibpath, "r")
+    local f = io.open(bibpath, "r")
     if f then
         entries_str = f:read('*all')
         if entries_str then
@@ -78,7 +78,7 @@ function Cite(c)
                     key_list[entry_key] = true
                     doi_key_map[doi] = entry_key
                     citation.id = entry_key
-                    f = io.open(bibpath, "a")
+                    local f = io.open(bibpath, "a+")
                     f:write(entry_str .. "\n")
                     f:close()
                 end                
