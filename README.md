@@ -50,7 +50,13 @@ By the way, Einstein is genius.[@doi.org/10.1002/andp.19053221004; @doi:10.1002/
 
 </pre>
 
-Example command (in the case of [JACS](https://pubs.acs.org/journal/jacsat) style):
+Example command 1 (.md -> .md)
+
+```sh
+pandoc --lua-filter doi2cite.lua --wrap=preserve -s example.md -o ourpur.md
+```
+
+Example command 2 (.md -> .pdf with [JACS](https://pubs.acs.org/journal/jacsat) style):
 
 ```sh
 pandoc --lua-filter doi2cite.lua --filter=pandoc-crossref --citeproc --csl=journal-of-the-american-chemical-society.csl -s example.md -o example.pdf
