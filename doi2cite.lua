@@ -32,12 +32,16 @@ function Meta(m)
     if f then
         entries_str = f:read('*all')
         if entries_str then
-            doi_entry_map = get_doi_entry_map(entries_str)    
+            doi_entry_map = get_doi_entry_map(entries_str)
+            doi_key_map = get_doi_key_map(entries_str)
+            for doi,key in pairs(doi_key_map) do
+                key_list[key] = true
+            end
         end
         f:close()
     end
-    f = io.open(bibpath, "w")
-    f:close()
+    -- f = io.open(bibpath, "w")
+    -- f:close()
     print(bibpath .. " is created for bibliography from DOI.")
 end
 
@@ -47,11 +51,11 @@ function Cite(c)
     for _, citation in pairs(c.citations) do
         local id = citation.id:gsub('%s+', ''):gsub('%%2F', '/')
         if id:sub(1,16) == "https://doi.org/" then
-            doi = id:sub(17)
+            doi = id:sub(17):lower()
         elseif id:sub(1,8) == "doi.org/" then
-            doi = id:sub(9)
+            doi = id:sub(9):lower()
         elseif id:sub(1,4) == "DOI:" or id:sub(1,4) == "doi:" then
-            doi = id:sub(5)
+            doi = id:sub(5):lower()
         else
             doi = nil
         end
@@ -59,6 +63,7 @@ function Cite(c)
             if doi_key_map[doi] ~= nil then
                 local entry_key = doi_key_map[doi]
                 citation.id = entry_key
+                print("Existing DOI: "..doi)
             else
                 local entry_str = get_bibentry(doi)
                 if entry_str == nil or entry_str == "Resource not found." then
@@ -91,7 +96,7 @@ end
 function get_bibentry(doi)
     local entry_str = doi_entry_map[doi]
     if entry_str == nil then
-        print("Request RefData of DOI = " .. doi)
+        print("Request DOI: " .. doi)
         local url = base_url.."/works/"..doi.."/transform/application/x-bibtex"
         mt, entry_str = pandoc.mediabag.fetch(url)
     end
@@ -137,6 +142,17 @@ function get_doi_entry_map(bibtex_string)
       entries[doi] = entry_str
     end
     return entries
+end
+
+-- Make hashmap which key = DOI, value = bibtex key string
+function get_doi_key_map(bibtex_string)
+    local keys = {};
+    for entry_str in bibtex_string:gmatch('@.-\n}\n') do
+      local doi = get_entrydoi(entry_str)
+      local key = get_entrykey(entry_str)
+      keys[doi] = key
+    end
+    return keys
 end
 
 
