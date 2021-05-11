@@ -10,7 +10,8 @@
 --------------------------------------------------------------------------------
 base_url = "http://api.crossref.org"
 bibpath = "./bib_from_doi.bib"
-bibkeylist = {};
+key_list = {};
+doi_key_map = {};
 doi_entry_map = {};
 
 
@@ -44,6 +45,7 @@ end
 -- Then, replace "citation.id"
 function Cite(c)
     for _, citation in pairs(c.citations) do
+        local entry_key;
         local id = citation.id:gsub('%s+', ''):gsub('%%2F', '/')
         if id:sub(1,16) == "https://doi.org/" then
             doi = id:sub(17)
@@ -55,20 +57,32 @@ function Cite(c)
             doi = nil
         end
         if doi then
-            local entry_str = get_bibentry(doi)
-            if entry_str then
-                entry_str = replace_symbols(entry_str)
-                local entry_key = get_entrykey(entry_str)
-                if not (Set(bibkeylist)[entry_key]) then
+            if doi_key_map[doi] ~= nil then
+                entry_key = doi_key_map[doi]
+            else
+                local entry_str = get_bibentry(doi)
+                if entry_str then
+                    entry_str = replace_symbols(entry_str)
+                    entry_key = get_entrykey(entry_str)
+                    if key_list[entry_key] ~= nil then
+                        entry_key = entry_key.."_"..doi
+                        entry_str = replace_entrykey(entry_str, entry_key)
+                    end
+                    -- if Set(bibkeylist)[entry_key] then
+                    --     entry_key = entry_key.."_"..doi
+                    --     entry_str = replace_entrykey(entry_str, entry_key)
+                    -- end
+                    -- bibkeylist[#bibkeylist+1] = entry_key
+                    key_list[entry_key] = true
+                    doi_key_map[doi] = entry_key
                     f = io.open(bibpath, "a")
                     f:write(entry_str .. "\n")
                     f:close()
-                    bibkeylist[#bibkeylist+1] = entry_key
-                end
-                citation.id = entry_key
-            else
-                print("Failed to get ref from DOI: " .. doi)
+                else
+                    print("Failed to get ref from DOI: " .. doi)
+                end                
             end
+            citation.id = entry_key
         end
     end
     return c
@@ -79,13 +93,13 @@ end
 -- Common Functions --
 --------------------------------------------------------------------------------
 -- Make boolean hashmap from given list. key = list item, value = boolean.
-function Set (list)
-    local set = {};
-    for _, item in ipairs(list) do
-        set[item] = true
-    end
-    return set
-end
+--function Set (list)
+--    local set = {};
+--    for _, item in ipairs(list) do
+--        set[item] = true
+--    end
+--    return set
+--end
 
 -- Get bib of DOI from http://api.crossref.org
 function get_bibentry(doi)
@@ -94,7 +108,7 @@ function get_bibentry(doi)
         print("Request RefData of DOI = " .. doi)
         local url = base_url .. "/works/" .. doi .. "/transform/application/x-bibtex"
         mt, entry_str = pandoc.mediabag.fetch(url)
-        entry_str = make_key_unique(entry_str)
+        -- entry_str = make_key_unique(entry_str)
     end
     return entry_str
 end
@@ -124,6 +138,12 @@ function get_entrydoi(entry_string)
     return doi
 end
 
+-- Replace entry key of "entry_string" to newkey
+function replace_entrykey(entry_string, newkey)
+    entry_string = entry_string:gsub('(@%w+{).-(,)', '%1'..newkey..'%2')
+    return entry_string    
+end 
+
 -- Make hashmap which key = DOI, value = bibtex entry string
 function get_doi_entry_map(bibtex_string)
     local entries = {};
@@ -135,13 +155,13 @@ function get_doi_entry_map(bibtex_string)
 end
 
 -- Replace entry key of "entry_string" to DOI-contained unique key 
-function make_key_unique(entry_string)
-    local key = get_entrykey(entry_string)
-    local doi = get_entrydoi(entry_string)
-    local unique_key = key.."_"..doi
-    entry_string = entry_string:gsub('(@%w+{).-(,)', '%1'..unique_key..'%2')
-    return entry_string    
-end  
+-- function make_key_unique(entry_string)
+--     local key = get_entrykey(entry_string)
+--     local doi = get_entrydoi(entry_string)
+--     local unique_key = key.."_"..doi
+--     entry_string = entry_string:gsub('(@%w+{).-(,)', '%1'..unique_key..'%2')
+--     return entry_string    
+-- end  
 
 
 --------------------------------------------------------------------------------
