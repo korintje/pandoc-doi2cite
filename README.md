@@ -1,3 +1,6 @@
+# Where to get this filter
+This filter is included in the official Pandoc Lua filter repository (https://github.com/pandoc/lua-filters).
+
 # pandoc-doi2cite
 This pandoc lua filiter helps users to insert references in a document
 with using DOI(Digital Object Identifier) tags. With this filter, users
